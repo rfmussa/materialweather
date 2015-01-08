@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="72dp">
+    
+    <renato.weather.carrot.com.carrot.WeatherImageView
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:id="@+id/hourly_image"
+        android:layout_margin="8dp"
+        />
+    
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/hourly_text"
+        android:layout_alignTop="@id/hourly_image"
+        android:paddingLeft="72dp"
+        android:textSize="16sp"/>
+    
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/hourly_condition"
+        android:layout_below="@id/hourly_text"
+        android:paddingLeft="72dp"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        />
+    
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:id="@+id/hourly_temperature"
+        android:layout_margin="8dp"
+        android:layout_alignParentRight="true"
+        android:gravity="center"
+        android:textSize="@dimen/abc_text_size_large_material"
+        />
+</RelativeLayout>
