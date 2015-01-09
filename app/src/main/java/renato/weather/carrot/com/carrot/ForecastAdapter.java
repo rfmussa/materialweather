@@ -39,7 +39,7 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.ViewHo
 		final Forecast forecast = forecastList.get(position);
 
 		holder.hourly_image.setCondition(forecast.getIcon());
-		holder.hourly_temperature.setText(forecast.getTemp().getMetric() + " \u2103");
+		holder.hourly_temperature.setText(forecast.getTemperature().getMetric() + " \u2103");
 		holder.hourly_text.setText(forecast.getTime().getCivil());
 		holder.hourly_condition.setText(forecast.getCondition());
 

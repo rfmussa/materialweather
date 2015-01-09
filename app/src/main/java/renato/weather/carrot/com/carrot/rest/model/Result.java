@@ -1,15 +1,17 @@
 package renato.weather.carrot.com.carrot.rest.model;
 
+import com.google.gson.annotations.SerializedName;
+
 /**
  * Created by Renato on 04/01/15.
  */
 public class Result
 {
 	private String name;
-
 	private String type;
 
-	private String c;
+	@SerializedName("c")
+	private String city;
 
 	private String zmw;
 
@@ -17,7 +19,8 @@ public class Result
 
 	private String tzs;
 
-	private String l;
+	@SerializedName("l")
+	private String link;
 
 	private String lat;
 
@@ -28,29 +31,14 @@ public class Result
 		return name;
 	}
 
-	public void setName(String name)
-	{
-		this.name = name;
-	}
-
 	public String getType()
 	{
 		return type;
 	}
 
-	public void setType(String type)
+	public String getCity()
 	{
-		this.type = type;
-	}
-
-	public String getC()
-	{
-		return c;
-	}
-
-	public void setC(String c)
-	{
-		this.c = c;
+		return city;
 	}
 
 	public String getZmw()
@@ -58,19 +46,9 @@ public class Result
 		return zmw;
 	}
 
-	public void setZmw(String zmw)
-	{
-		this.zmw = zmw;
-	}
-
 	public String getTz()
 	{
 		return tz;
-	}
-
-	public void setTz(String tz)
-	{
-		this.tz = tz;
 	}
 
 	public String getTzs()
@@ -78,19 +56,9 @@ public class Result
 		return tzs;
 	}
 
-	public void setTzs(String tzs)
+	public String getLink()
 	{
-		this.tzs = tzs;
-	}
-
-	public String getL()
-	{
-		return l;
-	}
-
-	public void setL(String l)
-	{
-		this.l = l;
+		return link;
 	}
 
 	public String getLat()
@@ -98,18 +66,8 @@ public class Result
 		return lat;
 	}
 
-	public void setLat(String lat)
-	{
-		this.lat = lat;
-	}
-
 	public String getLon()
 	{
 		return lon;
-	}
-
-	public void setLon(String lon)
-	{
-		this.lon = lon;
 	}
 }

@@ -10,7 +10,8 @@ public class Forecast
 	@SerializedName("FCTTIME")
 	public FCTTIME time;
 
-	private Temperature temp;
+	@SerializedName("temp")
+	private Temperature temperature;
 
 	private DewPoint dewpoint;
 
@@ -21,13 +22,16 @@ public class Forecast
 
 	private String iconUrl;
 
-	private String fctcode;
+	@SerializedName("fctcode")
+	private String fctCode;
 
 	private String sky;
 
-	private WindSpeed wspd;
+	@SerializedName("wspd")
+	private WindSpeed windSpeed;
 
-	private WindDirection wdir;
+	@SerializedName("wdir")
+	private WindDirection windDirection;
 
 	private String wx;
 
@@ -40,18 +44,18 @@ public class Forecast
 	private Heatindex heatindex;
 
 	private Feelslike feelslike;
-
-
-	private String pop;
+	
+	@SerializedName("pop")
+	private String precipitationChance;
 
 	public FCTTIME getTime()
 	{
 		return time;
 	}
 
-	public Temperature getTemp()
+	public Temperature getTemperature()
 	{
-		return temp;
+		return temperature;
 	}
 
 	public DewPoint getDewpoint()
@@ -74,9 +78,9 @@ public class Forecast
 		return iconUrl;
 	}
 
-	public String getFctcode()
+	public String getFctCode()
 	{
-		return fctcode;
+		return fctCode;
 	}
 
 	public String getSky()
@@ -84,14 +88,14 @@ public class Forecast
 		return sky;
 	}
 
-	public WindSpeed getWspd()
+	public WindSpeed getWindSpeed()
 	{
-		return wspd;
+		return windSpeed;
 	}
 
-	public WindDirection getWdir()
+	public WindDirection getWindDirection()
 	{
-		return wdir;
+		return windDirection;
 	}
 
 	public String getWx()
@@ -124,9 +128,9 @@ public class Forecast
 		return feelslike;
 	}
 
-	public String getPop()
+	public String getPrecipitationChance()
 	{
-		return pop;
+		return precipitationChance;
 	}
 
 	public class FCTTIME
@@ -143,17 +147,20 @@ public class Forecast
 		private String mon;
 
 		@SerializedName("mon_padded")
-		private String monPadded;
+		private String monthPadded;
 
 		@SerializedName("mon_abbrev")
-		private String monAbbrev;
+		private String month;
 
-		private String mday;
+		@SerializedName("mDay")
+		private String day;
 
 		@SerializedName("mday_padded")
-		private String mdayPadded;
+		private String dayPadded;
 
-		private String yday;
+		@SerializedName("yDay")
+		private String yearDay;
+		
 		private String isdst;
 		private String epoch;
 		private String pretty;
@@ -174,20 +181,9 @@ public class Forecast
 		@SerializedName("weekday_name_abbrev")
 		private String weekdayNameAbbrev;
 
-		@SerializedName("weekday_name_unlang")
-		private String weekdayNameUnlang;
-
-		@SerializedName("weekday_name_night_unlang")
-		private String weekdayNameNightUnlang;
-
 		private String ampm;
 		private String tz;
 		private String age;
-
-		public String getAge()
-		{
-			return age;
-		}
 
 		public String getHour()
 		{
@@ -219,29 +215,29 @@ public class Forecast
 			return mon;
 		}
 
-		public String getMonPadded()
+		public String getMonthPadded()
 		{
-			return monPadded;
+			return monthPadded;
 		}
 
-		public String getMonAbbrev()
+		public String getMonth()
 		{
-			return monAbbrev;
+			return month;
 		}
 
-		public String getMday()
+		public String getDay()
 		{
-			return mday;
+			return day;
 		}
 
-		public String getMdayPadded()
+		public String getDayPadded()
 		{
-			return mdayPadded;
+			return dayPadded;
 		}
 
-		public String getYday()
+		public String getYearDay()
 		{
-			return yday;
+			return yearDay;
 		}
 
 		public String getIsdst()
@@ -289,16 +285,6 @@ public class Forecast
 			return weekdayNameAbbrev;
 		}
 
-		public String getWeekdayNameUnlang()
-		{
-			return weekdayNameUnlang;
-		}
-
-		public String getWeekdayNameNightUnlang()
-		{
-			return weekdayNameNightUnlang;
-		}
-
 		public String getAmpm()
 		{
 			return ampm;
@@ -307,6 +293,11 @@ public class Forecast
 		public String getTz()
 		{
 			return tz;
+		}
+
+		public String getAge()
+		{
+			return age;
 		}
 	}
 

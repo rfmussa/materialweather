@@ -7,4 +7,14 @@ public class DewPoint
 {
 	public String english;
 	public String metric;
+
+	public String getEnglish()
+	{
+		return english;
+	}
+
+	public String getMetric()
+	{
+		return metric;
+	}
 }

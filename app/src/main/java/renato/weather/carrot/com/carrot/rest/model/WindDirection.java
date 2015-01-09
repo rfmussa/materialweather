@@ -11,4 +11,14 @@ public class WindDirection
 	public String direction;
 
 	public String degrees;
+
+	public String getDirection()
+	{
+		return direction;
+	}
+
+	public String getDegrees()
+	{
+		return degrees;
+	}
 }
