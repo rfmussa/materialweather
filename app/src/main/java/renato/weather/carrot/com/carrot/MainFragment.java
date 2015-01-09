@@ -26,15 +26,15 @@ import retrofit.client.Response;
  */
 public class MainFragment extends Fragment
 {
-	private TextView location_name;
-	private TextView condition_text;
+	private TextView locationName;
+	private TextView condition;
 	private TextView temperature;
-	private TextView wind_text;
-	private TextView precipitation_text;
+	private TextView wind;
+	private TextView precipitation;
 
-	private WeatherImageView condition_image;
-	private ImageView wind_image;
-	private ImageView precipitation_image;
+	private WeatherImageView conditionImage;
+	private ImageView windImage;
+	private ImageView precipitationImage;
 
 	private RestClient restClient;
 
@@ -53,12 +53,12 @@ public class MainFragment extends Fragment
 	{
 		View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
-		location_name = (TextView) rootView.findViewById(R.id.location_name);
-		condition_text = (TextView) rootView.findViewById(R.id.condition_text);
+		locationName = (TextView) rootView.findViewById(R.id.location_name);
+		condition = (TextView) rootView.findViewById(R.id.condition_text);
 		temperature = (TextView) rootView.findViewById(R.id.temperature);
-		wind_text = (TextView) rootView.findViewById(R.id.wind_text);
-		precipitation_text = (TextView) rootView.findViewById(R.id.precipitation_text);
-		condition_image = (WeatherImageView) rootView.findViewById(R.id.condition_image);
+		wind = (TextView) rootView.findViewById(R.id.wind_text);
+		precipitation = (TextView) rootView.findViewById(R.id.precipitation_text);
+		conditionImage = (WeatherImageView) rootView.findViewById(R.id.condition_image);
 
 		recList = (RecyclerView) rootView.findViewById(R.id.hourlyList);
 		recList.setHasFixedSize(true);
@@ -81,11 +81,11 @@ public class MainFragment extends Fragment
 			@Override
 			public void success(ObservationResponse data, Response response)
 			{
-				condition_text.setText(data.getCurrentObservation().getWeather());
-				wind_text.setText(data.getCurrentObservation().getWindGustKph());
-				precipitation_text.setText(data.getCurrentObservation().getRelativeHumidity());
+				condition.setText(data.getCurrentObservation().getWeather());
+				wind.setText(data.getCurrentObservation().getWindGustKph());
+				precipitation.setText(data.getCurrentObservation().getRelativeHumidity());
 				temperature.setText(data.getCurrentObservation().getTempC() + " \u2103");
-				condition_image.setCondition(data.getCurrentObservation().getIcon());
+				conditionImage.setCondition(data.getCurrentObservation().getIcon());
 				restClient.getApiService().getHourlyCondition("zmw:94101.1.99999", new Callback<Forecasts>()
 				{
 					@Override

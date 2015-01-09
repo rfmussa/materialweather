@@ -39,9 +39,9 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.ViewHo
 		final Forecast forecast = forecastList.get(position);
 
 		holder.hourly_image.setCondition(forecast.getIcon());
-		holder.hourly_temperature.setText(forecast.getTemperature().getMetric() + " \u2103");
-		holder.hourly_text.setText(forecast.getTime().getCivil());
-		holder.hourly_condition.setText(forecast.getCondition());
+		holder.temperature.setText(forecast.getTemperature().getMetric() + " \u2103");
+		holder.text.setText(forecast.getTime().getCivil());
+		holder.condition.setText(forecast.getCondition());
 
 	}
 
@@ -55,18 +55,18 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.ViewHo
 	public static class ViewHolder extends RecyclerView.ViewHolder
 	{
 		private WeatherImageView hourly_image;
-		private TextView hourly_text;
-		private TextView hourly_condition;
-		private TextView hourly_temperature;
+		private TextView text;
+		private TextView condition;
+		private TextView temperature;
 
 		public ViewHolder(View itemView)
 		{
 			super(itemView);
 
 			hourly_image = (WeatherImageView) itemView.findViewById(R.id.hourly_image);
-			hourly_temperature = (TextView) itemView.findViewById(R.id.hourly_temperature);
-			hourly_condition = (TextView) itemView.findViewById(R.id.hourly_condition);
-			hourly_text = (TextView) itemView.findViewById(R.id.hourly_text);
+			temperature = (TextView) itemView.findViewById(R.id.hourly_temperature);
+			condition = (TextView) itemView.findViewById(R.id.hourly_condition);
+			text = (TextView) itemView.findViewById(R.id.hourly_text);
 		}
 
 	}
