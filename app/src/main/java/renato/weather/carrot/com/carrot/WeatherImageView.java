@@ -48,7 +48,7 @@ public class WeatherImageView extends TextView
 		try
 		{
 			iconicFontDrawable.setIcon(weatherCondition.getConditionHashmap().get(condition));
-			setBackground(iconicFontDrawable);
+			setBackgroundDrawable(iconicFontDrawable);
 		} catch (Exception e)
 		{
 			Log.d("Failed to find an appropriate icon for", condition);
