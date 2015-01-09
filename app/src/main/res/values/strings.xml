@@ -5,27 +5,4 @@
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     
-    <string name="chanceflurries">meteo-snowy1</string>
-    <string name="chancerain">meteo-rainy1</string>
-    <string name="chancesleet">meteo-snowflake</string>
-    <string name="chancesnow">meteo-snowy1</string>
-    <string name="chancestorms">meteo-lightning1</string>
-    
-    <string name="clear">meteo-sun</string>
-    <string name="cloudy">meteo-cloudy4</string>
-    <string name="flurries">meteo-snowy1</string>
-    <string name="fog">meteo-lines</string>
-    <string name="hazy">"meteo-none</string>
-    
-    <string name="mostlycloudy">meteo-cloudy3</string>
-    <string name="mostlysunny">meteo-sunny3</string>
-    <string name="partlycloudy">meteo-cloudy1</string>
-    <string name="partlysunny">meteo-sunny1</string>
-    
-    <string name="sleet">meteo-snowflake</string>
-    <string name="rain">meteo-rainy4</string>
-    <string name="snow">meteo-snowy4</string>
-    <string name="sunny">meteo-sunny4</string>
-    <string name="tstorms">meteo-lightning4</string>
-    <string name="unknonw">meteo-none</string>
 </resources>
