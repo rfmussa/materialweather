@@ -75,7 +75,7 @@ public class MainFragment extends Fragment
 	{
 		super.onResume();
 
-		restClient = new RestClient();
+		restClient = RestClient.getInstance();
 		restClient.getApiService().getCondition("zmw:94101.1.99999", new Callback<ObservationResponse>()
 		{
 			@Override

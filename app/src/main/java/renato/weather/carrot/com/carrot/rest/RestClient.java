@@ -13,16 +13,23 @@ public class RestClient
 	private static final String OUTPUT_FORMAT = "json";
 	private static final String BASE_URL = "http://api.wunderground.com/api/659238e4cd7d1530";
 	private static final String SEARCH_URL = "http://autocomplete.wunderground.com/";
-
+	
 	private WundergroundService wundergroundService;
 	private AutoCompleteService autoCompleteService;
-
-
+	
+	private static RestClient singleton;
+	
+	public static RestClient getInstance()
+	{
+		if(singleton == null)
+		{
+			singleton = new RestClient();
+		}
+		return singleton;
+	}
+	
 	public RestClient()
 	{
-		/*Gson gson = new GsonBuilder()
-				.setDateFormat("yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'SSS'Z'")
-				.create();*/
 
 		RequestInterceptor requestInterceptor = new RequestInterceptor()
 		{
@@ -37,7 +44,6 @@ public class RestClient
 				.setLogLevel(RestAdapter.LogLevel.FULL)
 				.setEndpoint(BASE_URL)
 				.setRequestInterceptor(requestInterceptor)
-						//.setConverter(new GsonConverter(gson))
 				.build();
 
 		wundergroundService = restAdapter.create(WundergroundService.class);
