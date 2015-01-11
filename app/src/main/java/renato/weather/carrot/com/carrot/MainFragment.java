@@ -76,52 +76,55 @@ public class MainFragment extends Fragment
 		super.onResume();
 
 		restClient = RestClient.getInstance();
-		restClient.getApiService().getCondition("zmw:94101.1.99999", new Callback<ObservationResponse>()
+		if(forecastList == null)
 		{
-			@Override
-			public void success(ObservationResponse data, Response response)
+			/*restClient.getApiService().getCondition("zmw:94101.1.99999", new Callback<ObservationResponse>()
 			{
-				condition.setText(data.getCurrentObservation().getWeather());
-				wind.setText(data.getCurrentObservation().getWindGustKph());
-				precipitation.setText(data.getCurrentObservation().getRelativeHumidity());
-				temperature.setText(data.getCurrentObservation().getTempC() + " \u2103");
-				conditionImage.setCondition(data.getCurrentObservation().getIcon());
-				restClient.getApiService().getHourlyCondition("zmw:94101.1.99999", new Callback<Forecasts>()
+				@Override
+				public void success(ObservationResponse data, Response response)
 				{
-					@Override
-					public void success(Forecasts forecasts, Response response)
+					condition.setText(data.getCurrentObservation().getWeather());
+					wind.setText(data.getCurrentObservation().getWindGustKph());
+					precipitation.setText(data.getCurrentObservation().getRelativeHumidity());
+					temperature.setText(data.getCurrentObservation().getTempC() + " \u2103");
+					conditionImage.setCondition(data.getCurrentObservation().getIcon());
+					restClient.getApiService().getHourlyCondition("zmw:94101.1.99999", new Callback<Forecasts>()
 					{
-						restClient.getApiService().getHourlyCondition("zmw:94101.1.99999", new Callback<Forecasts>()
+						@Override
+						public void success(Forecasts forecasts, Response response)
 						{
-							@Override
-							public void success(Forecasts forecasts, Response response)
+							restClient.getApiService().getHourlyCondition("zmw:94101.1.99999", new Callback<Forecasts>()
 							{
-								forecastList = forecasts.getForecastList();
-								recList.setAdapter(new ForecastAdapter(forecastList));
-							}
+								@Override
+								public void success(Forecasts forecasts, Response response)
+								{
+									forecastList = forecasts.getForecastList();
+									recList.setAdapter(new ForecastAdapter(forecastList));
+								}
 
-							@Override
-							public void failure(RetrofitError error)
-							{
+								@Override
+								public void failure(RetrofitError error)
+								{
 
-							}
-						});
-					}
+								}
+							});
+						}
 
-					@Override
-					public void failure(RetrofitError error)
-					{
+						@Override
+						public void failure(RetrofitError error)
+						{
 
-					}
-				});
-			}
+						}
+					});
+				}
 
-			@Override
-			public void failure(RetrofitError error)
-			{
-				Toast.makeText(getActivity(), "Failure", Toast.LENGTH_LONG).show();
+				@Override
+				public void failure(RetrofitError error)
+				{
+					Toast.makeText(getActivity(), "Failure", Toast.LENGTH_LONG).show();
 
-			}
-		});
+				}
+			});*/
+		}
 	}
 }

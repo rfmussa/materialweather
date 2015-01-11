@@ -7,9 +7,9 @@ import java.util.List;
  */
 public class Results
 {
-	public List<Result> resultsList;
+	private List<Result> resultsList;
 
-	public List getResults()
+	public List<Result> getResults()
 	{
 		return resultsList;
 	}
