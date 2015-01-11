@@ -2,47 +2,41 @@ package renato.weather.carrot.com.carrot;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.app.SearchManager;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBarActivity;
-import android.support.v7.widget.SearchView;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
+
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import renato.weather.carrot.com.carrot.rest.RestClient;
-import renato.weather.carrot.com.carrot.rest.model.Result;
-import renato.weather.carrot.com.carrot.rest.model.Results;
+import renato.weather.carrot.com.carrot.rest.model.Location;
+import renato.weather.carrot.com.carrot.rest.model.Locations;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 import rx.Observable;
-import rx.android.observables.AndroidObservable;
+import rx.android.concurrency.AndroidSchedulers;
 import rx.android.observables.ViewObservable;
-import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.functions.Func1;
 
 
 public class MainActivity extends ActionBarActivity
 {
-	SearchView searchView;
-	EditText editText;
-	TextView searchText;
+	private final int SEARCH_DELAY = 300;
+	private Dialog searchDialog;
+	RecyclerView locationRecyclerView;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -52,10 +46,11 @@ public class MainActivity extends ActionBarActivity
 
 		//Setting toolbar
 		Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-		if (toolbar != null) {
+		if (toolbar != null)
+		{
 			setSupportActionBar(toolbar);
 		}
-		
+
 		if (savedInstanceState == null)
 		{
 			getSupportFragmentManager().beginTransaction()
@@ -64,37 +59,12 @@ public class MainActivity extends ActionBarActivity
 		}
 	}
 
-
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu)
 	{
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.menu_main, menu);
-		//searchText = (EditText) searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text);
-		
-		/*Observable<TextView> searchTextObservable = ViewObservable.text(searchText);
-		searchTextObservable.debounce(300, TimeUnit.MILLISECONDS)
-				.map(new Func1<TextView, String>()
-				{
-					@Override
-					public String call(TextView searchText)
-					{
-						return searchText.getText().toString();
-					}
-				})
-				.observeOn(AndroidSchedulers.mainThread())
-				.subscribe(new Action1<String>() {
-					@Override
-					public void call(String query) {
-						doSearch(query);
-					}
-				}, new Action1<Throwable>() {
-					@Override
-					public void call(Throwable throwable) {
-						throwable.printStackTrace();
-					}
-				});
-		*/
+		searchDialog = createDialog();
 		return true;
 	}
 
@@ -105,24 +75,33 @@ public class MainActivity extends ActionBarActivity
 		// automatically handle clicks on the Home/Up button, so long
 		// as you specify a parent activity in AndroidManifest.xml.
 		int id = item.getItemId();
-		
+
 		if (id == R.id.action_search)
 		{
-			openDialog().show();
+			searchDialog.show();
 		}
 
 		return super.onOptionsItemSelected(item);
 	}
-	
+
 	private void doSearch(String query)
 	{
-		if(!query.isEmpty() && query.length() > 2)
+		if (!query.isEmpty() && query.length() > 2)
 		{
-			RestClient.getInstance().getAutoCompleteService().getLocations(query, new Callback<Results>()
+			RestClient.getInstance().getAutoCompleteService().getLocations(query, new Callback<Locations>()
 			{
 				@Override
-				public void success(Results results, Response response)
+				public void success(Locations locations, Response response)
 				{
+					List<Location> locationList = locations.getLocationsList();
+					
+					if (locationList != null && locationList.size() > 0)
+					{
+						locationRecyclerView.setAdapter(new LocationAdapter(locations.getLocationsList()));
+					}
+
+					//TODO animate
+					locationRecyclerView.setVisibility(locationList.size() > 0 ? View.VISIBLE : View.GONE);
 
 				}
 
@@ -134,49 +113,50 @@ public class MainActivity extends ActionBarActivity
 			});
 		}
 	}
-	
-	private Dialog openDialog()
+
+	private Dialog createDialog()
 	{
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		LayoutInflater inflater = this.getLayoutInflater();
 		View v = inflater.inflate(R.layout.search_dialog, null);
 		builder.setView(v);
 
-		EditText et = (EditText) v.findViewById(R.id.ptnEdit);
-		et.addTextChangedListener(new TextWatcher()
-		{
-			@Override
-			public void beforeTextChanged(CharSequence s, int start, int count, int after)
-			{
-				
-			}
+		EditText locationText = (EditText) v.findViewById(R.id.location_search_text);
 
-			@Override
-			public void onTextChanged(CharSequence s, int start, int before, int count)
-			{
+		locationRecyclerView = (RecyclerView) v.findViewById(R.id.location_list);
+		locationRecyclerView.setHasFixedSize(true);
 
-			}
+		LinearLayoutManager llm = new LinearLayoutManager(this);
+		llm.setOrientation(LinearLayoutManager.VERTICAL);
+		locationRecyclerView.setLayoutManager(llm);
 
-			@Override
-			public void afterTextChanged(Editable s)
-			{
-
-			}
-		});
-
-		builder.setPositiveButton("Accept", new DialogInterface.OnClickListener() {
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				dialog.dismiss();
-			}
-		});
-
-		builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				dialog.dismiss();
-			}
-		});
+		Observable<EditText> searchTextObservable = ViewObservable.text(locationText);
+		searchTextObservable.debounce(SEARCH_DELAY, TimeUnit.MILLISECONDS)
+				.map(new Func1<TextView, String>()
+				{
+					@Override
+					public String call(TextView searchText)
+					{
+						return searchText.getText().toString();
+					}
+				})
+				.observeOn(AndroidSchedulers.mainThread())
+				.subscribe(new Action1<String>()
+				{
+					@Override
+					public void call(String query)
+					{
+						doSearch(query);
+					}
+				}, new Action1<Throwable>()
+				{
+					@Override
+					public void call(Throwable throwable)
+					{
+						//TODO handle error
+						
+					}
+				});
 
 		return builder.create();
 	}

@@ -99,28 +99,28 @@ public class ObservationResponse
 
 		@SerializedName("dewpoint_string")
 		private String dewpointString;
-		
+
 		@SerializedName("dewpoint_f")
 		private Integer dewpointF;
-		
+
 		@SerializedName("dewpoint_c")
 		private Integer dewpointC;
-		
+
 		@SerializedName("heat_index_string")
 		private String heatIndexString;
-		
+
 		@SerializedName("heat_index_f")
 		private String heatIndexF;
-		
+
 		@SerializedName("heat_index_c")
 		private String heatIndexC;
-		
+
 		@SerializedName("windchill_string")
 		private String windchillString;
-		
+
 		@SerializedName("windchill_f")
 		private String windchillF;
-		
+
 		@SerializedName("windchill_c")
 		private String windchillC;
 		@SerializedName("feelslike_string")
@@ -142,10 +142,10 @@ public class ObservationResponse
 		private String solarradiation;
 
 		private String UV;
-		
+
 		@SerializedName("precip_1hr_string")
 		private String precip1hrString;
-		
+
 		@SerializedName("precip_1hr_in")
 
 		private String precip1hrIn;
@@ -163,10 +163,10 @@ public class ObservationResponse
 		private String precipTodayMetric;
 
 		private String icon;
-		
+
 		@SerializedName("icon_url")
 		private String iconUrl;
-		
+
 		@SerializedName("forecast_url")
 
 		private String forecastUrl;
@@ -438,15 +438,15 @@ public class ObservationResponse
 		private String full;
 		private String city;
 		private String state;
-		
+
 		@SerializedName("state_name")
 		private String stateName;
-		
+
 		private String country;
-		
+
 		@SerializedName("country_iso3166")
 		private String countryIso3166;
-		
+
 		private String zip;
 		private String latitude;
 		private String longitude;

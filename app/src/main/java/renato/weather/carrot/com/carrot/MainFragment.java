@@ -76,7 +76,7 @@ public class MainFragment extends Fragment
 		super.onResume();
 
 		restClient = RestClient.getInstance();
-		if(forecastList == null)
+		if (forecastList == null)
 		{
 			/*restClient.getApiService().getCondition("zmw:94101.1.99999", new Callback<ObservationResponse>()
 			{

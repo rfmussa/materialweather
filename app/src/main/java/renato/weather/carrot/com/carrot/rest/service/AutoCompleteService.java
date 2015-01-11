@@ -1,6 +1,6 @@
 package renato.weather.carrot.com.carrot.rest.service;
 
-import renato.weather.carrot.com.carrot.rest.model.Results;
+import renato.weather.carrot.com.carrot.rest.model.Locations;
 import retrofit.Callback;
 import retrofit.http.GET;
 import retrofit.http.Query;
@@ -11,5 +11,5 @@ import retrofit.http.Query;
 public interface AutoCompleteService
 {
 	@GET("/aq")
-	void getLocations(@Query("query") String query, Callback<Results> callback);
+	void getLocations(@Query("query") String query, Callback<Locations> callback);
 }
