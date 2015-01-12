@@ -16,6 +16,7 @@ import java.util.List;
 import renato.weather.carrot.com.carrot.rest.RestClient;
 import renato.weather.carrot.com.carrot.rest.model.Forecast;
 import renato.weather.carrot.com.carrot.rest.model.Forecasts;
+import renato.weather.carrot.com.carrot.rest.model.Location;
 import renato.weather.carrot.com.carrot.rest.model.ObservationResponse;
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -78,7 +79,7 @@ public class MainFragment extends Fragment
 		restClient = RestClient.getInstance();
 		if (forecastList == null)
 		{
-			/*restClient.getApiService().getCondition("zmw:94101.1.99999", new Callback<ObservationResponse>()
+			restClient.getApiService().getCondition("zmw:94101.1.99999", new Callback<ObservationResponse>()
 			{
 				@Override
 				public void success(ObservationResponse data, Response response)
@@ -124,7 +125,7 @@ public class MainFragment extends Fragment
 					Toast.makeText(getActivity(), "Failure", Toast.LENGTH_LONG).show();
 
 				}
-			});*/
+			});
 		}
 	}
 }
