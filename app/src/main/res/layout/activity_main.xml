@@ -10,7 +10,10 @@
             android:id="@+id/content_frame"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:paddingTop="64dp">
+            >
+        <include
+            android:id="@+id/toolbar"
+            layout="@layout/toolbar"/>
     </FrameLayout>
 
     <View android:id="@+id/left_drawer"
