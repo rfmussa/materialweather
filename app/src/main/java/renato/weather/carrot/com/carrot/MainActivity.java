@@ -2,7 +2,6 @@ package renato.weather.carrot.com.carrot;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -15,10 +14,13 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.squareup.otto.Subscribe;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import renato.weather.carrot.com.carrot.events.EventBus;
+import renato.weather.carrot.com.carrot.events.LocationChangeEvent;
 import renato.weather.carrot.com.carrot.rest.RestClient;
 import renato.weather.carrot.com.carrot.rest.model.Location;
 import renato.weather.carrot.com.carrot.rest.model.Locations;
@@ -43,20 +45,23 @@ public class MainActivity extends ActionBarActivity
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-
+		
 		//Setting toolbar
 		Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 		if (toolbar != null)
 		{
 			setSupportActionBar(toolbar);
 		}
-
+		
 		if (savedInstanceState == null)
 		{
 			getSupportFragmentManager().beginTransaction()
 					.add(R.id.container, new MainFragment())
 					.commit();
 		}
+		
+		EventBus.getInstance().register(this);
+	
 	}
 
 	@Override
@@ -102,7 +107,7 @@ public class MainActivity extends ActionBarActivity
 
 					//TODO animate
 					locationRecyclerView.setVisibility(locationList.size() > 0 ? View.VISIBLE : View.GONE);
-
+					
 				}
 
 				@Override
@@ -129,7 +134,7 @@ public class MainActivity extends ActionBarActivity
 		LinearLayoutManager llm = new LinearLayoutManager(this);
 		llm.setOrientation(LinearLayoutManager.VERTICAL);
 		locationRecyclerView.setLayoutManager(llm);
-
+		
 		Observable<EditText> searchTextObservable = ViewObservable.text(locationText);
 		searchTextObservable.debounce(SEARCH_DELAY, TimeUnit.MILLISECONDS)
 				.map(new Func1<TextView, String>()
@@ -159,6 +164,15 @@ public class MainActivity extends ActionBarActivity
 				});
 
 		return builder.create();
+	}
+
+	@Subscribe
+	public void locationChanged(LocationChangeEvent event) {
+		// TODO: React to the event somehow!
+		if(searchDialog.isShowing())
+		{
+			searchDialog.dismiss();
+		}
 	}
 
 }

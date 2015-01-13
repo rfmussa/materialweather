@@ -9,6 +9,8 @@ import android.widget.TextView;
 
 import java.util.List;
 
+import renato.weather.carrot.com.carrot.events.EventBus;
+import renato.weather.carrot.com.carrot.events.LocationChangeEvent;
 import renato.weather.carrot.com.carrot.rest.model.Location;
 
 /**
@@ -33,10 +35,19 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.ViewHo
 	}
 
 	@Override
-	public void onBindViewHolder(ViewHolder holder, int position)
+	public void onBindViewHolder(ViewHolder holder, final int position)
 	{
 		Location searchLocation = locationList.get(position);
 		holder.locationCity.setText(searchLocation.getName());
+		
+		holder.itemView.setOnClickListener(new View.OnClickListener()
+		{
+			@Override
+			public void onClick(View v)
+			{
+				EventBus.getInstance().post(new LocationChangeEvent(locationList.get(position)));
+			}
+		});
 	}
 
 	@Override
@@ -55,6 +66,7 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.ViewHo
 			super(itemView);
 
 			locationCity = (TextView) itemView.findViewById(R.id.city_text);
+
 		}
 
 	}

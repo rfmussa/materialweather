@@ -13,7 +13,8 @@ public class Location
 	@SerializedName("c")
 	private String country;
 
-	private String zmw;
+	@SerializedName("zmw")
+	private String code;
 
 	private String tz;
 
@@ -41,9 +42,9 @@ public class Location
 		return country;
 	}
 
-	public String getZmw()
+	public String getCode()
 	{
-		return zmw;
+		return code;
 	}
 
 	public String getTz()
