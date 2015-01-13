@@ -5,15 +5,16 @@ import com.google.gson.annotations.SerializedName;
 /**
  * Created by Renato on 04/01/15.
  */
-public class Result
+public class Location
 {
 	private String name;
 	private String type;
 
 	@SerializedName("c")
-	private String city;
+	private String country;
 
-	private String zmw;
+	@SerializedName("zmw")
+	private String code;
 
 	private String tz;
 
@@ -36,14 +37,14 @@ public class Result
 		return type;
 	}
 
-	public String getCity()
+	public String getCountry()
 	{
-		return city;
+		return country;
 	}
 
-	public String getZmw()
+	public String getCode()
 	{
-		return zmw;
+		return code;
 	}
 
 	public String getTz()

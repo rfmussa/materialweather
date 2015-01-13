@@ -2,18 +2,19 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:orientation="vertical" 
               android:layout_width="match_parent"
-              android:layout_height="match_parent">
+              android:layout_height="wrap_content">
 
     <EditText
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="64dp"
         android:layout_marginTop="8dp"
-        android:id="@+id/ptnEdit"/>
+        android:id="@+id/location_search_text"/>
     
-    <ListView
-        android:layout_width="wrap_content"
+    <android.support.v7.widget.RecyclerView
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/cityList"
-        android:clickable="true"/>
+        android:id="@+id/location_list"
+        android:clickable="true"
+        android:visibility="gone"/>
 
 </LinearLayout>

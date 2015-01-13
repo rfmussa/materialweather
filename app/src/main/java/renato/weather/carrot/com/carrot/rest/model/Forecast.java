@@ -44,7 +44,7 @@ public class Forecast
 	private Heatindex heatindex;
 
 	private Feelslike feelslike;
-	
+
 	@SerializedName("pop")
 	private String precipitationChance;
 
@@ -160,7 +160,7 @@ public class Forecast
 
 		@SerializedName("yDay")
 		private String yearDay;
-		
+
 		private String isdst;
 		private String epoch;
 		private String pretty;

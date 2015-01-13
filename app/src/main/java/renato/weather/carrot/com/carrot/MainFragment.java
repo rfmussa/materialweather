@@ -11,11 +11,16 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.squareup.otto.Subscribe;
+
 import java.util.List;
 
+import renato.weather.carrot.com.carrot.events.EventBus;
+import renato.weather.carrot.com.carrot.events.LocationChangeEvent;
 import renato.weather.carrot.com.carrot.rest.RestClient;
 import renato.weather.carrot.com.carrot.rest.model.Forecast;
 import renato.weather.carrot.com.carrot.rest.model.Forecasts;
+import renato.weather.carrot.com.carrot.rest.model.Location;
 import renato.weather.carrot.com.carrot.rest.model.ObservationResponse;
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -66,7 +71,7 @@ public class MainFragment extends Fragment
 		LinearLayoutManager llm = new LinearLayoutManager(getActivity());
 		llm.setOrientation(LinearLayoutManager.VERTICAL);
 		recList.setLayoutManager(llm);
-
+		
 		return rootView;
 	}
 
@@ -74,54 +79,116 @@ public class MainFragment extends Fragment
 	public void onResume()
 	{
 		super.onResume();
+		
+		EventBus.getInstance().register(this);
 
 		restClient = RestClient.getInstance();
-		restClient.getApiService().getCondition("zmw:94101.1.99999", new Callback<ObservationResponse>()
+		if (forecastList == null)
 		{
-			@Override
-			public void success(ObservationResponse data, Response response)
+			restClient.getApiService().getCondition("94101.1.99999", new Callback<ObservationResponse>()
 			{
-				condition.setText(data.getCurrentObservation().getWeather());
-				wind.setText(data.getCurrentObservation().getWindGustKph());
-				precipitation.setText(data.getCurrentObservation().getRelativeHumidity());
-				temperature.setText(data.getCurrentObservation().getTempC() + " \u2103");
-				conditionImage.setCondition(data.getCurrentObservation().getIcon());
-				restClient.getApiService().getHourlyCondition("zmw:94101.1.99999", new Callback<Forecasts>()
+				@Override
+				public void success(ObservationResponse data, Response response)
 				{
-					@Override
-					public void success(Forecasts forecasts, Response response)
-					{
-						restClient.getApiService().getHourlyCondition("zmw:94101.1.99999", new Callback<Forecasts>()
-						{
-							@Override
-							public void success(Forecasts forecasts, Response response)
+					condition.setText(data.getCurrentObservation().getWeather());
+					wind.setText(data.getCurrentObservation().getWindGustKph());
+					precipitation.setText(data.getCurrentObservation().getRelativeHumidity());
+					temperature.setText(data.getCurrentObservation().getTempC() + " \u2103");
+					conditionImage.setCondition(data.getCurrentObservation().getIcon());
+
+							restClient.getApiService().getHourlyCondition("94101.1.99999", new Callback<Forecasts>()
 							{
-								forecastList = forecasts.getForecastList();
-								recList.setAdapter(new ForecastAdapter(forecastList));
-							}
+								@Override
+								public void success(Forecasts forecasts, Response response)
+								{
+									forecastList = forecasts.getForecastList();
+									recList.setAdapter(new ForecastAdapter(forecastList));
+								}
 
-							@Override
-							public void failure(RetrofitError error)
-							{
+								@Override
+								public void failure(RetrofitError error)
+								{
 
-							}
-						});
-					}
+								}
+							});
+				}
 
-					@Override
-					public void failure(RetrofitError error)
-					{
+				@Override
+				public void failure(RetrofitError error)
+				{
+					Toast.makeText(getActivity(), "Failure", Toast.LENGTH_LONG).show();
 
-					}
-				});
-			}
-
-			@Override
-			public void failure(RetrofitError error)
-			{
-				Toast.makeText(getActivity(), "Failure", Toast.LENGTH_LONG).show();
-
-			}
-		});
+				}
+			});
+		}
 	}
+
+	@Override
+	public void onPause()
+	{
+		super.onPause();
+		EventBus.getInstance().unregister(this);
+	}
+
+	private void getConditions(final Location location)
+	{
+		restClient = RestClient.getInstance();
+
+			restClient.getApiService().getCondition(location.getCode(), new Callback<ObservationResponse>()
+			{
+				@Override
+				public void success(ObservationResponse data, Response response)
+				{
+					condition.setText(data.getCurrentObservation().getWeather());
+					wind.setText(data.getCurrentObservation().getWindGustKph());
+					precipitation.setText(data.getCurrentObservation().getRelativeHumidity());
+					temperature.setText(data.getCurrentObservation().getTempC() + " \u2103");
+					conditionImage.setCondition(data.getCurrentObservation().getIcon());
+					restClient.getApiService().getHourlyCondition(location.getLink(), new Callback<Forecasts>()
+					{
+						@Override
+						public void success(Forecasts forecasts, Response response)
+						{
+							restClient.getApiService().getHourlyCondition(location.getCode(), new Callback<Forecasts>()
+							{
+								@Override
+								public void success(Forecasts forecasts, Response response)
+								{
+									forecastList = forecasts.getForecastList();
+									recList.setAdapter(new ForecastAdapter(forecastList));
+								}
+								
+								@Override
+								public void failure(RetrofitError error)
+								{
+									
+								}
+							});
+						}
+						
+						@Override
+						public void failure(RetrofitError error)
+						{
+							
+						}
+					});
+				}
+
+				@Override
+				public void failure(RetrofitError error)
+				{
+					Toast.makeText(getActivity(), "Failure", Toast.LENGTH_LONG).show();
+
+				}
+			});
+		
+	}
+	
+	@Subscribe
+	public void locationChanged(LocationChangeEvent event) {
+		Location location = event.location;
+		locationName.setText(location.getName());
+		getConditions(location);
+	}
+
 }
