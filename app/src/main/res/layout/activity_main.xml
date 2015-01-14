@@ -16,7 +16,8 @@
             layout="@layout/toolbar"/>
     </FrameLayout>
 
-    <View android:id="@+id/left_drawer"
+    <android.support.v7.widget.RecyclerView
+              android:id="@+id/left_drawer"
               android:layout_width="240dp"
               android:layout_height="match_parent"
               android:layout_gravity="start"
