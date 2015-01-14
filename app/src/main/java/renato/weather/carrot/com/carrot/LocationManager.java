@@ -8,8 +8,12 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.List;
 
+import renato.weather.carrot.com.carrot.events.EventBus;
+import renato.weather.carrot.com.carrot.events.LocationChangeEvent;
+import renato.weather.carrot.com.carrot.events.SavedLocationChange;
 import renato.weather.carrot.com.carrot.rest.model.Location;
 import renato.weather.carrot.com.carrot.rest.model.Locations;
 
@@ -21,11 +25,11 @@ public class LocationManager
 	private final String LOCATIONS_ID = "LOCATIONS_ID";
 	private static LocationManager singleton;
 	private SharedPreferences preferences;
-	private Context context;
 	private Gson gson;
 	private SharedPreferences.Editor editor;
-	private List<Location> savedLocations;
-	
+	private List<Location> savedLocations = new ArrayList<>();
+
+
 	public static LocationManager getInstance(Context context)
 	{
 		if (singleton == null)
@@ -37,30 +41,36 @@ public class LocationManager
 	
 	public LocationManager(Context context)
 	{
-		this.context = context;
 		gson = new Gson();
 		preferences = PreferenceManager.getDefaultSharedPreferences(context);
 		editor = preferences.edit();
+		getLocations();
 	}
 	
-	// serialize
-	private void serialize()
+	// update
+	private void update()
 	{
 		String locationsString = gson.toJson(savedLocations);
 		editor.putString(LOCATIONS_ID, locationsString);
 		editor.commit();
+		EventBus.getInstance().post(new SavedLocationChange());
+
 	}
 	public void addLocation(Location location)
 	{
+		if(savedLocations == null)
+		{
+			savedLocations = new ArrayList<>();
+		}
 		savedLocations.add(location);
-		serialize();
+		update();
 		
 	}
 	
 	public void removeLocation(int position)
 	{
 		savedLocations.remove(position);
-		serialize();
+		update();
 	}
 	
 	
