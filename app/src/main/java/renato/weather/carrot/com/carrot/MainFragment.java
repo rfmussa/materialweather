@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -46,7 +47,9 @@ public class MainFragment extends Fragment
 	private List<Forecast> forecastList;
 	private ForecastAdapter recAdapter;
 	private RecyclerView recList;
-
+	
+	private Location currentLocation;
+	
 	public MainFragment()
 	{
 
@@ -64,7 +67,6 @@ public class MainFragment extends Fragment
 		wind = (TextView) rootView.findViewById(R.id.wind_text);
 		precipitation = (TextView) rootView.findViewById(R.id.precipitation_text);
 		conditionImage = (WeatherImageView) rootView.findViewById(R.id.condition_image);
-
 		recList = (RecyclerView) rootView.findViewById(R.id.hourlyList);
 		recList.setHasFixedSize(true);
 
@@ -186,9 +188,9 @@ public class MainFragment extends Fragment
 	
 	@Subscribe
 	public void locationChanged(LocationChangeEvent event) {
-		Location location = event.location;
-		locationName.setText(location.getName());
-		getConditions(location);
+		currentLocation = event.location;
+		locationName.setText(currentLocation.getName());
+		getConditions(currentLocation);
 	}
 
 }
