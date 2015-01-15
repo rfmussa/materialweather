@@ -3,7 +3,6 @@ package renato.weather.carrot.com.carrot;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.os.Bundle;
-import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -43,7 +42,7 @@ public class MainActivity extends ActionBarActivity
 	private RecyclerView searchRecyclerView;
 	private RecyclerView drawerRecyclerView;
 	private LocationManager locationManager;
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
@@ -63,17 +62,17 @@ public class MainActivity extends ActionBarActivity
 					.add(R.id.container, new MainFragment())
 					.commit();
 		}
-
-		drawerRecyclerView = (RecyclerView) findViewById(R.id.left_drawer);
+		
+		drawerRecyclerView = (RecyclerView) findViewById(R.id.drawer_list);
 		drawerRecyclerView.setHasFixedSize(true);
-
+		
 		LinearLayoutManager llm = new LinearLayoutManager(this);
-		llm.setOrientation(LinearLayoutManager.VERTICAL);		
+		llm.setOrientation(LinearLayoutManager.VERTICAL);
 		drawerRecyclerView.setLayoutManager(llm);
 		
 		EventBus.getInstance().register(this);
 		locationManager = LocationManager.getInstance(this);
-		drawerRecyclerView.setAdapter(new LocationAdapter(locationManager.getLocations()));
+		drawerRecyclerView.setAdapter(new LocationAdapter(locationManager.getLocations(), true));
 		
 	
 	}
@@ -116,7 +115,7 @@ public class MainActivity extends ActionBarActivity
 					
 					if (locationList != null && locationList.size() > 0)
 					{
-						searchRecyclerView.setAdapter(new LocationAdapter(locations.getLocationsList()));
+						searchRecyclerView.setAdapter(new LocationAdapter(locations.getLocationsList(), false));
 					}
 
 					//TODO animate
@@ -144,7 +143,7 @@ public class MainActivity extends ActionBarActivity
 
 		searchRecyclerView = (RecyclerView) v.findViewById(R.id.location_list);
 		searchRecyclerView.setHasFixedSize(true);
-
+		
 		LinearLayoutManager llm = new LinearLayoutManager(this);
 		llm.setOrientation(LinearLayoutManager.VERTICAL);
 		searchRecyclerView.setLayoutManager(llm);
@@ -191,7 +190,7 @@ public class MainActivity extends ActionBarActivity
 	@Subscribe
 	public void saveLocationChanged(SavedLocationChange event) 
 	{
-		drawerRecyclerView.setAdapter(new LocationAdapter(locationManager.getLocations()));
+		drawerRecyclerView.setAdapter(new LocationAdapter(locationManager.getLocations(), true));
 	}
 
 }
