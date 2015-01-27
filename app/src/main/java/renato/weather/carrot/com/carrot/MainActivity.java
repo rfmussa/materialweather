@@ -21,6 +21,7 @@ import java.util.concurrent.TimeUnit;
 
 import renato.weather.carrot.com.carrot.events.EventBus;
 import renato.weather.carrot.com.carrot.events.LocationChangeEvent;
+import renato.weather.carrot.com.carrot.events.SavedLocationChange;
 import renato.weather.carrot.com.carrot.rest.RestClient;
 import renato.weather.carrot.com.carrot.rest.model.Location;
 import renato.weather.carrot.com.carrot.rest.model.Locations;
@@ -38,7 +39,9 @@ public class MainActivity extends ActionBarActivity
 {
 	private final int SEARCH_DELAY = 300;
 	private Dialog searchDialog;
-	RecyclerView locationRecyclerView;
+	private RecyclerView searchRecyclerView;
+	private RecyclerView drawerRecyclerView;
+	private LocationManager locationManager;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -60,7 +63,17 @@ public class MainActivity extends ActionBarActivity
 					.commit();
 		}
 		
+		drawerRecyclerView = (RecyclerView) findViewById(R.id.drawer_list);
+		drawerRecyclerView.setHasFixedSize(true);
+		
+		LinearLayoutManager llm = new LinearLayoutManager(this);
+		llm.setOrientation(LinearLayoutManager.VERTICAL);
+		drawerRecyclerView.setLayoutManager(llm);
+		
 		EventBus.getInstance().register(this);
+		locationManager = LocationManager.getInstance(this);
+		drawerRecyclerView.setAdapter(new LocationAdapter(locationManager.getLocations(), true));
+		
 	
 	}
 
@@ -102,11 +115,11 @@ public class MainActivity extends ActionBarActivity
 					
 					if (locationList != null && locationList.size() > 0)
 					{
-						locationRecyclerView.setAdapter(new LocationAdapter(locations.getLocationsList()));
+						searchRecyclerView.setAdapter(new LocationAdapter(locations.getLocationsList(), false));
 					}
 
 					//TODO animate
-					locationRecyclerView.setVisibility(locationList.size() > 0 ? View.VISIBLE : View.GONE);
+					searchRecyclerView.setVisibility(locationList.size() > 0 ? View.VISIBLE : View.GONE);
 					
 				}
 
@@ -128,12 +141,12 @@ public class MainActivity extends ActionBarActivity
 
 		EditText locationText = (EditText) v.findViewById(R.id.location_search_text);
 
-		locationRecyclerView = (RecyclerView) v.findViewById(R.id.location_list);
-		locationRecyclerView.setHasFixedSize(true);
-
+		searchRecyclerView = (RecyclerView) v.findViewById(R.id.location_list);
+		searchRecyclerView.setHasFixedSize(true);
+		
 		LinearLayoutManager llm = new LinearLayoutManager(this);
 		llm.setOrientation(LinearLayoutManager.VERTICAL);
-		locationRecyclerView.setLayoutManager(llm);
+		searchRecyclerView.setLayoutManager(llm);
 		
 		Observable<EditText> searchTextObservable = ViewObservable.text(locationText);
 		searchTextObservable.debounce(SEARCH_DELAY, TimeUnit.MILLISECONDS)
@@ -168,11 +181,16 @@ public class MainActivity extends ActionBarActivity
 
 	@Subscribe
 	public void locationChanged(LocationChangeEvent event) {
-		// TODO: React to the event somehow!
 		if(searchDialog.isShowing())
 		{
 			searchDialog.dismiss();
 		}
+	}
+
+	@Subscribe
+	public void saveLocationChanged(SavedLocationChange event) 
+	{
+		drawerRecyclerView.setAdapter(new LocationAdapter(locationManager.getLocations(), true));
 	}
 
 }

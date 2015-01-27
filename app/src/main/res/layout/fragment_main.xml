@@ -4,10 +4,13 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:paddingTop="64dp">
+
+    
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/location_name"
+        android:layout_below="@id/toolbar"
         android:textSize="@dimen/abc_text_size_display_2_material"
         android:text="San Francisco"
         android:typeface="serif"
